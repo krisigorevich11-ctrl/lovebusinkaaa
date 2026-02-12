@@ -2,6 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Валентинка ❤️</title>
 
 <style>
@@ -13,7 +14,7 @@
 body {
     margin: 0;
     height: 100vh;
-    background: radial-gradient(circle at top, #ffb6c1, #ff5f8a);
+    background: linear-gradient(135deg, #ff7eb3, #ff758c, #ff4d6d);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,52 +22,71 @@ body {
     color: #fff;
 }
 
+/* Анимированный фон */
+body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 2px, transparent 2px);
+    background-size: 40px 40px;
+    animation: bgMove 20s linear infinite;
+}
+
+@keyframes bgMove {
+    from { background-position: 0 0; }
+    to { background-position: 200px 200px; }
+}
+
 .container {
     text-align: center;
     z-index: 2;
+    padding: 20px;
 }
 
 h1 {
-    font-size: 36px;
+    font-size: clamp(24px, 5vw, 38px);
     margin: 25px 0;
-    text-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    text-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    animation: fadeUp 1.2s ease;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* ❤️ Сердце */
 .heart {
-    width: 160px;
-    height: 160px;
-    background: #ff2f5b;
+    width: clamp(120px, 35vw, 180px);
+    height: clamp(120px, 35vw, 180px);
+    background: #ff1f4c;
     position: relative;
     transform: rotate(-45deg);
     margin: 0 auto;
-    animation: pulse 1.2s infinite;
+    animation: pulse 1.2s infinite, glow 2s infinite;
 }
 
 .heart::before,
 .heart::after {
     content: "";
-    width: 160px;
-    height: 160px;
-    background: #ff2f5b;
+    width: 100%;
+    height: 100%;
+    background: #ff1f4c;
     border-radius: 50%;
     position: absolute;
 }
 
-.heart::before {
-    top: -80px;
-    left: 0;
-}
-
-.heart::after {
-    left: 80px;
-    top: 0;
-}
+.heart::before { top: -50%; left: 0; }
+.heart::after { left: 50%; top: 0; }
 
 @keyframes pulse {
-    0% { transform: rotate(-45deg) scale(1); }
+    0%,100% { transform: rotate(-45deg) scale(1); }
     50% { transform: rotate(-45deg) scale(1.15); }
-    100% { transform: rotate(-45deg) scale(1); }
+}
+
+@keyframes glow {
+    0%,100% { box-shadow: 0 0 20px #ff4d6d; }
+    50% { box-shadow: 0 0 50px #fff; }
 }
 
 /* Кнопки */
@@ -75,27 +95,28 @@ h1 {
 }
 
 button {
-    padding: 12px 32px;
-    font-size: 18px;
+    padding: 14px 36px;
+    font-size: clamp(16px, 4vw, 20px);
     border: none;
-    border-radius: 30px;
+    border-radius: 40px;
     cursor: pointer;
-    margin: 0 10px;
+    margin: 10px;
     transition: 0.3s;
 }
 
 .yes {
-    background: #ff2f5b;
-    color: #fff;
-}
-
-.no {
     background: #fff;
     color: #ff2f5b;
 }
 
+.no {
+    background: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+}
+
 button:hover {
-    transform: scale(1.1);
+    transform: scale(1.15);
 }
 
 /* Ошибка */
@@ -103,6 +124,13 @@ button:hover {
     margin-top: 15px;
     font-size: 16px;
     display: none;
+    animation: shake 0.4s;
+}
+
+@keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
 }
 
 /* Модалка */
@@ -120,9 +148,15 @@ button:hover {
     background: #fff;
     color: #ff2f5b;
     padding: 30px;
-    border-radius: 20px;
+    border-radius: 25px;
     text-align: center;
     font-size: 24px;
+    animation: zoomIn 0.4s;
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }
 
 /* Финал */
@@ -130,6 +164,8 @@ button:hover {
     display: none;
     flex-direction: column;
     align-items: center;
+    z-index: 3;
+    animation: fadeUp 1s ease;
 }
 
 .final h1 {
@@ -137,25 +173,31 @@ button:hover {
 }
 
 .photo {
-    width: 220px;
-    height: 220px;
-    border-radius: 20px;
+    width: min(85vw, 420px);
+    height: min(85vw, 420px);
+    border-radius: 30px;
     object-fit: cover;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    margin-top: 20px;
+    margin-top: 25px;
+    animation: photoPop 1.5s ease;
+    box-shadow: 0 0 60px rgba(255,255,255,0.6);
+}
+
+@keyframes photoPop {
+    0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+    60% { transform: scale(1.05) rotate(2deg); }
+    100% { transform: scale(1) rotate(0); opacity: 1; }
 }
 
 /* Конфетти */
 .confetti {
     position: fixed;
-    width: 10px;
-    height: 10px;
-    background: red;
+    width: 12px;
+    height: 12px;
     animation: fall linear infinite;
 }
 
 @keyframes fall {
-    from { transform: translateY(-10px) rotate(0); }
+    from { transform: translateY(-10vh) rotate(0); }
     to { transform: translateY(110vh) rotate(360deg); }
 }
 </style>
@@ -167,7 +209,7 @@ button:hover {
     <div class="heart" id="heart"></div>
     <h1>Будешь моей валентинкой навсегда?</h1>
 
-    <div class="buttons" id="buttons">
+    <div class="buttons">
         <button class="yes" onclick="yesClick()">Да</button>
         <button class="no" onclick="noClick()">Нет</button>
     </div>
@@ -175,15 +217,12 @@ button:hover {
     <div class="error" id="error">❌ Неправильный выбор</div>
 </div>
 
-<!-- Модалка -->
 <div class="modal" id="modal">
     <div class="modal-content">
-        😠😠😠<br><br>
-        Так не пойдет!
+        😠😠😠<br><br>Так не пойдет!
     </div>
 </div>
 
-<!-- Финал -->
 <div class="final" id="final">
     <h1>Ура! Люблю тебя, моя бусинка! 💖</h1>
     <img src="photo.jpg" class="photo" alt="Наша фотография">
@@ -194,7 +233,6 @@ let noCount = 0;
 
 function noClick() {
     noCount++;
-
     if (noCount === 1) {
         document.getElementById("error").style.display = "block";
     } else {
@@ -203,7 +241,7 @@ function noClick() {
             document.getElementById("modal").style.display = "none";
             document.getElementById("error").style.display = "none";
             document.querySelector(".no").remove();
-        }, 2000);
+        }, 1800);
     }
 }
 
@@ -214,14 +252,13 @@ function yesClick() {
 }
 
 function launchConfetti() {
-    for (let i = 0; i < 120; i++) {
+    for (let i = 0; i < 150; i++) {
         const confetti = document.createElement("div");
         confetti.classList.add("confetti");
         confetti.style.left = Math.random() * 100 + "vw";
-        confetti.style.animationDuration = 2 + Math.random() * 3 + "s";
         confetti.style.background = `hsl(${Math.random()*360},100%,70%)`;
+        confetti.style.animationDuration = 2 + Math.random() * 3 + "s";
         document.body.appendChild(confetti);
-
         setTimeout(() => confetti.remove(), 5000);
     }
 }
